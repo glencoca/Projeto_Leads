@@ -1,0 +1,51 @@
+* {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  box-sizing: border-box;
+}
+
+/* Tema escuro */
+
+.modal_content_dark {
+  width: 70%;
+  height: 600px;
+  border-radius: 10px;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  border: none;
+  position: absolute;
+  border: 1px solid rgb(204, 204, 204);
+  background: #f2f2f2;
+  overflow: auto;
+  border-radius: 4px;
+  outline: none;
+  padding: 20px;
+  
+  animation-name: transaction;
+  animation-duration: 850ms;
+}
+#Close{
+  cursor: pointer;
+}
+.modal_overlay_dark {
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  inset: 0px;
+  animation-name: transaction;
+  animation-duration: 850ms;
+}
+
+@keyframes transaction {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
