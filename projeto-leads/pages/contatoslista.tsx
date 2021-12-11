@@ -65,7 +65,7 @@ const ContatoLista: NextPage = () => {
         <ContatoListbannerBottom>
           {list.map((c) => {
             return (
-              <ContatoDivGroup>
+              <ContatoDivGroup key={c.empresa}>
                 <ContatoDivInfos>
                   <ImgContato imgBanner={ImgContatoList.src}></ImgContato>
                   <ContatoDivInfo>

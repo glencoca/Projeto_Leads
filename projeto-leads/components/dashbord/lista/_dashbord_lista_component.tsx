@@ -53,7 +53,7 @@ const DashbordListaComponent: React.FC = () => {
         {
           list.map((c) => {
             return (
-              <DashbordListaLi>
+              <DashbordListaLi key={c.empresa}>
               <Image
                 src={user}
                 alt="Imagem da empresa"

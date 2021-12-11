@@ -38,40 +38,29 @@ const Leads: NextPage<Props> = ({ data }: Props) => {
       nomeUser: "João",
       empresa: "SpaceX",
       temperatura: 64,
-      idUsuario: 1
+      idUsuario: 1,
+      nomeTipoStatus: "Iniciando"
     },
     {
       nome: "Felipe",
       empresa: "Nike",
       temperatura: 25,
-      idUsuario: 2
-
+      idUsuario: 2,
+      nomeTipoStatus: "Avançando"
     },
     {
       nome: "Matheus",
       empresa: "Extra",
       temperatura: 64,
-      idUsuario: 3
-
+      idUsuario: 3,
+      nomeTipoStatus: "Estagnado"
     },
     {
       nome: "Matheus",
       empresa: "Extra",
       temperatura: 64,
-      idUsuario: 4
-
-    },
-  ]);
-
-  const [listStatus, setlistStatus] = useState([
-    {
-      nomeTipoStatus: "Iniciando",
-    },
-    {
-      nomeTipoStatus: "Fechado",
-    },
-    {
-      nomeTipoStatus: "Negociação",
+      idUsuario: 4,
+      nomeTipoStatus: "Finalizado"
     },
   ]);
 
@@ -112,9 +101,10 @@ const Leads: NextPage<Props> = ({ data }: Props) => {
       <LeadsMain>
         <LeadsMainContent>
           {
-          listStatus.map((c) => {
+          list.map((c) => {
             return (
               <ColumnComponent
+              key={c.idUsuario}
                 data={[
                   <CardComponent status={Status.Estagnado} empresa={c.empresa} nome={c.nomeUser} hot={100} key={c.idUsuario} />
                 ]}

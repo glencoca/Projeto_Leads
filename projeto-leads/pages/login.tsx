@@ -1,6 +1,7 @@
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import { GetStaticProps, NextPage } from "next";
+import { useRouter } from "next/router";
 import {
   LoginBody,
   LoginCard,
@@ -35,18 +36,17 @@ import {
 
 const SignInButton = () => {
   const { instance, accounts, inProgress } = useMsal();
-  const [apiData, setApiData] = useState(null);
-
-  const accessTokenRequest = {
-    scopes: ["user.read", "mailboxsettings.read", "calendars.readwrite"],
-    account: accounts[0],
-  };
+  const router = useRouter();
 
   return (
     <Image
       src={autenticacao_image}
       alt="Logo da Microsoft"
-      onClick={() => instance.loginRedirect(accessTokenRequest)}
+      onClick={() =>
+        instance.loginRedirect().then(() => {
+          ProtectedComponent();
+        })
+      }
     />
   );
 };
@@ -70,7 +70,7 @@ function ProtectedComponent() {
         "directory.read.all",
         "directory.readwrite.all",
         "group.read.all",
-        "group.readWrite.all"
+        "group.readWrite.all",
       ],
       account: accounts[0],
     };
@@ -82,35 +82,17 @@ function ProtectedComponent() {
           let accessToken = accessTokenResponse.accessToken;
           // Call your API with token
 
-          console.log(accessToken);
+          localStorage.setItem("accessTokenMicrosoft", accessToken);
 
-          fetch("https://graph.microsoft.com/v1.0/me/", {
-            headers: {
-              Authorization: "Bearer " + accessToken,
-            },
-          })
-            .then((response) => {
-
-              const data =  response.json()
-              console.log( "Essa é a resposta:");
-              console.log(data)
-
-            
-            })
-            .catch((erro) => {
-              console.log(erro);
-            });
+          console.log("Token de acesso: \n" + accessToken);
         })
         .catch((error) => {
           if (error instanceof InteractionRequiredAuthError) {
             instance.acquireTokenRedirect(accessTokenRequest);
           }
-          console.log(error);
         });
     }
   }, [instance, accounts, inProgress, apiData]);
-
-  return <p>Return your protected content here: {apiData}</p>;
 }
 
 const WelcomeUser = () => {
@@ -119,7 +101,7 @@ const WelcomeUser = () => {
   if (accounts[0] == null) {
     return <p>Usuário não autenticado</p>;
   }
-  const username = accounts[0].username;
+  const username = accounts[0].tenantId;
 
   return <p>Olá, {username}</p>;
 };
@@ -130,24 +112,7 @@ const SignOutButton = () => {
   return <button onClick={() => instance.logoutRedirect()}>Deslogar</button>;
 };
 
-import {
-  PublicClientApplication,
-  EventType,
-  EventMessage,
-  AuthenticationResult,
-} from "@azure/msal-browser";
-
-import { config } from "../Config";
-import axios from "axios";
-import { copyFileSync } from "fs";
-
-interface LoginProps {
-  isAuthenticated: boolean;
-  authButtonMethod: any;
-  user: any;
-}
-
-const Login: NextPage<LoginProps> = ({ authButtonMethod }: LoginProps) => {
+const Login: NextPage = () => {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
 
@@ -160,7 +125,6 @@ const Login: NextPage<LoginProps> = ({ authButtonMethod }: LoginProps) => {
       />
       <LoginCard>
         <LoginCardTitle>Seja bem-vindo!</LoginCardTitle>
-        <WelcomeUser />
         <LoginCardFormContainer>
           <LoginCardInputContainer>
             <LoginCardlabel>E-mail</LoginCardlabel>
@@ -192,7 +156,6 @@ const Login: NextPage<LoginProps> = ({ authButtonMethod }: LoginProps) => {
           <LoginCardDividerLine></LoginCardDividerLine>
         </LoginCardDivider>
         <SignInButton />
-        <ProtectedComponent />
         <SignOutButton />
       </LoginCard>
     </LoginBody>

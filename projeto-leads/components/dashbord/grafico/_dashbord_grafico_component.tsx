@@ -5,7 +5,6 @@ import {
   DashbordGraficoHeader,
   DashbordGraficoHeaderH1,
 } from "./_dashbord_grafico_style";
-import { api } from "../../../services/api/google_charts_api";
 import Chart from "react-google-charts";
 import Image from "next/dist/client/image";
 
